@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const connectDB = require("./config/db");
 require("dotenv").config();
 
@@ -7,6 +8,8 @@ const app = express();
 
 connectDB(process.env.MONGO_URI);
 app.use(express.json());
+
+app.use(cors());
 
 app.use("/api/auth", require("./routes/AuthRoute"));
 

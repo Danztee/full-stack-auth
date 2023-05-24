@@ -8,17 +8,29 @@
     <title>Login & Registration Form</title>
     <!---Custom CSS File--->
     <link rel="stylesheet" href="style.css" />
+    <script defer src="./app.js"></script>
   </head>
   <body>
     <div class="container">
       <input type="checkbox" id="check" />
+      <!-- LOGIN -->
       <div class="login form">
         <header>Login</header>
         <form action="#">
-          <input type="text" placeholder="Enter your email" />
-          <input type="password" placeholder="Enter your password" />
+          <input
+            type="text"
+            placeholder="Enter your email"
+            required
+            id="login_email"
+          />
+          <input
+            type="password"
+            placeholder="Enter your password"
+            required
+            id="login_password"
+          />
           <a href="#">Forgot password?</a>
-          <input type="button" class="button" value="Login" />
+          <input type="button" class="button" value="Login" id="login_button" />
         </form>
         <div class="signup">
           <span class="signup"
@@ -27,6 +39,8 @@
           </span>
         </div>
       </div>
+
+      <!-- SIGN UP -->
       <div class="registration form">
         <header>Signup</header>
         <form action="#">
