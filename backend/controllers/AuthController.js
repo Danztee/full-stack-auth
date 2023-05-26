@@ -62,10 +62,6 @@ const login = async (req, res) => {
 
     res.status(201).json({
       message: "user logged in successfully",
-      user: {
-        email: user.email,
-        id: user._id,
-      },
       token: await generateToken(user._id),
     });
   } catch (error) {
@@ -76,4 +72,13 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const me = async (req, res) => {
+  try {
+    res.status(200).json({ user: req.user });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+};
+
+module.exports = { register, login, me };
