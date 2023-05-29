@@ -1,6 +1,11 @@
 const _name = document.getElementById("name");
 const _email = document.getElementById("email");
 
+const product_name = document.getElementById("product_name");
+const price = document.getElementById("price");
+const quantity = document.getElementById("quantity");
+const submitPaymentBtn = document.getElementById("submit-payment");
+
 const logout = document.getElementById("logout");
 
 const token = JSON.parse(localStorage.getItem("token"));
@@ -28,3 +33,31 @@ logout.addEventListener("click", () => {
   localStorage.clear();
   window.location.href = "/";
 });
+
+const makePayment = async (e) => {
+  e.preventDefault();
+  const payload = {
+    product_name: product_name.value,
+    price: price.value,
+    quantity: quantity.value,
+  };
+
+  const res = await fetch("http://localhost:8000/api/make-payment", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const data = await res.json();
+  console.log(data);
+
+  if (!data.url) return;
+
+  var url = data.url;
+  var newTab = window.open(url, "_blank");
+  newTab.focus();
+};
+
+submitPaymentBtn.addEventListener("click", makePayment);
