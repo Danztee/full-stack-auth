@@ -50,6 +50,10 @@ app.post("/api/make-payment", async (req, res) => {
   }
 });
 
+app.get("/", (req, res) => {
+  res.send("welcome to the api");
+});
+
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
 });
