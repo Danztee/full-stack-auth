@@ -6,11 +6,20 @@ const price = document.getElementById("price");
 const quantity = document.getElementById("quantity");
 const submitPaymentBtn = document.getElementById("submit-payment");
 
+const uploadBtn = document.getElementById("upload");
+const image = document.getElementById("pic-file");
+
 const logout = document.getElementById("logout");
 
 const token = JSON.parse(localStorage.getItem("token"));
 
 if (!token) window.location.href = "/";
+
+const uploadPicture = (e) => {
+  e.preventDefault();
+  // const file = new File(image, "image");
+  // console.log(file);
+};
 
 const getMe = async () => {
   const response = await fetch("http://localhost:8000/api/auth/me", {
@@ -61,3 +70,4 @@ const makePayment = async (e) => {
 };
 
 submitPaymentBtn.addEventListener("click", makePayment);
+uploadBtn.addEventListener("click", uploadPicture);
