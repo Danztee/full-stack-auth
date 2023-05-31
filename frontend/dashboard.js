@@ -11,15 +11,47 @@ const image = document.getElementById("pic-file");
 
 const logout = document.getElementById("logout");
 
+let profilePicture;
+let pictureName;
+
 const token = JSON.parse(localStorage.getItem("token"));
 
 if (!token) window.location.href = "/";
 
-const uploadPicture = (e) => {
+const uploadPicture = async (e) => {
   e.preventDefault();
-  // const file = new File(image, "image");
-  // console.log(file);
+
+  if (!profilePicture || !pictureName) return alert("Please select a picture");
+
+  const payload = {
+    picture: profilePicture,
+    name: pictureName,
+  };
+  console.log(payload);
+
+  const res = await fetch("http://localhost:8000/api/upload-picture", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const data = await res.json();
+  console.log(data);
 };
+
+image.addEventListener("change", (e) => {
+  const reader = new FileReader();
+
+  const _image = e.target.files[0];
+  pictureName = _image.name;
+  reader.onload = (e) => {
+    profilePicture = e.target.result;
+  };
+
+  reader.readAsDataURL(_image);
+});
 
 const getMe = async () => {
   const response = await fetch("http://localhost:8000/api/auth/me", {

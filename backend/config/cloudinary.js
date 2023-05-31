@@ -7,4 +7,12 @@ cloudinary.config({
   secure: true,
 });
 
-module.exports = cloudinary;
+const upload_to_cloudinary = async (name, picture) => {
+  const uploadedResponse = await cloudinary.uploader.upload(picture, {
+    public_id: name,
+    folder: "profile-pic",
+  });
+  return uploadedResponse;
+};
+
+module.exports = upload_to_cloudinary;
