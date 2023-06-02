@@ -11,6 +11,9 @@ const image = document.getElementById("pic-file");
 
 const logout = document.getElementById("logout");
 
+const pic_container = document.getElementById("pic");
+const picture = document.getElementById("picture");
+
 let profilePicture;
 let pictureName;
 
@@ -27,7 +30,6 @@ const uploadPicture = async (e) => {
     picture: profilePicture,
     name: pictureName,
   };
-  console.log(payload);
 
   const res = await fetch("http://localhost:8000/api/upload-picture", {
     method: "POST",
@@ -45,9 +47,12 @@ image.addEventListener("change", (e) => {
   const reader = new FileReader();
 
   const _image = e.target.files[0];
+
   pictureName = _image.name;
   reader.onload = (e) => {
     profilePicture = e.target.result;
+    picture.src = profilePicture;
+    pic_container.style.display = "block";
   };
 
   reader.readAsDataURL(_image);
