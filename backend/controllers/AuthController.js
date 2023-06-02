@@ -1,6 +1,7 @@
 const Auth = require("../models/authSchema");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("../utils/email");
 
 const generateToken = async (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -81,4 +82,34 @@ const me = async (req, res) => {
   }
 };
 
-module.exports = { register, login, me };
+const forgetPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    if (!email) throw new Error("Please enter your email");
+    const user = await Auth.findOne({ email });
+    if (!user) throw new Error("User not found");
+
+    const resetToken = user.createPasswordResetToken();
+    await user.save();
+
+    const reset_url = `${req.protocol}://${req.get(
+      "host"
+    )}/api/auth/resetPassword/${resetToken}`;
+
+    await sendEmail({
+      to: user.email,
+      subject: "Your reset password link, valid for 10 mins",
+      message: `You are getting this email because you asked for a password reset.\n click on this link to reset your password ${reset_url}`,
+    });
+
+    res.status(200).json({ message: "password reset token sent successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+module.exports = { register, login, me, forgetPassword };
